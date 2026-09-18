@@ -260,61 +260,16 @@ const order=DATA.slice().sort((a,b)=>b.items.length-a.items.length);
 const chips=document.getElementById('chips');
 let act=new Set();
 function renderChips(){
-  /* — 分类筛选按钮（按医嘱条数排序） — */
-const order = DATA.slice().sort((a,b)=>b.items.length-a.items.length);
-const chips = document.getElementById('chips');
-let act = new Set();
-
-// 【新增】折叠控制配置
-const defaultVisibleCount = 8; // 默认显示的标签数量（含“全部”）
-let isExpanded = false;
-
-// 【修改】渲染函数，加入折叠逻辑
-function renderChips(){
-    let html = '<span class="chip'+(act.size?'':' on')+'" data-c="ALL">全部</span>';
-    
-    html += order.map((g, index) => {
-        // 超过默认数量且未展开时，添加隐藏类
-        const hideClass = (index >= defaultVisibleCount && !isExpanded) ? ' hidden-tag' : '';
-        
-        return '<span class="chip'+((act.has(g.cat)?' on':''))+hideClass+'" data-c="'+g.cat+'">'+
-                 g.cat+' <b style="opacity:.6;font-weight:400">'+g.items.length+'</b></span>';
-    }).join('');
-    
-    // 如果分类总数超过默认值，追加“展开/收起”按钮
-    if (order.length > defaultVisibleCount) {
-        const btnText = isExpanded ? '收起 ▲' : '展开更多 ▼';
-        html += '<button id="toggleTagsBtn" class="toggle-tags-btn">'+btnText+'</button>';
-    }
-    
-    chips.innerHTML = html;
+  chips.innerHTML='<span class="chip'+(act.size?'':' on')+'" data-c="ALL">全部</span>'+
+  order.map(g=>'<span class="chip'+(act.has(g.cat)?' on':'')+'" data-c="'+g.cat+'">'+g.cat+
+  ' <b style="opacity:.6;font-weight:400">'+g.items.length+'</b></span>').join('');
 }
-
-// 【新增】事件委托：处理展开/收起按钮点击
-chips.addEventListener('click', (e) => {
-    if (e.target.id === 'toggleTagsBtn') {
-        isExpanded = !isExpanded;
-        renderChips();
-        apply();
-    }
-});
-
-// 【保留】原有的分类筛选点击事件
-chips.onclick = (e) => {
-    const c = e.target.closest('.chip'); 
-    if (!c) return;
-    
-    const v = c.dataset.c;
-    if (v === 'ALL') {
-        act.clear();
-    } else {
-        act.has(v) ? act.delete(v) : act.add(v);
-    }
-    
-    if (act.size > 3) act = new Set([v]);
-    
-    renderChips(); 
-    apply();
+chips.onclick=e=>{
+  const c=e.target.closest('.chip'); if(!c) return;
+  const v=c.dataset.c;
+  if(v==='ALL'){act.clear();}else{act.has(v)?act.delete(v):act.add(v);}
+  if(act.size>3) act=new Set([v]);
+  renderChips(); apply();
 };
 
 /* ── 渲染 ── */
@@ -364,137 +319,5 @@ document.getElementById('hideNote').onclick=()=>{
   try{localStorage.setItem('hideNote','1');}catch(e){}
 };
 if(localStorage.getItem('hideNote')==='1') document.getElementById('nt').style.display='none';</script>
-
-<!-- 联系我们 悬浮按钮 -->
-<div class="contact-float">
-    <button class="contact-btn" onclick="toggleContact()">
-        💬 联系我们
-    </button>
-    <div class="contact-card" id="contactCard">
-        <h4>联系信息</h4>
-        <p><strong>邮箱：</strong>Anchorage321@yeah.net</p>
-        <p><strong>有如补充更正请联系</strong></p>
-       <span class="close-btn" onclick="toggleContact()">×</span>
-    </div>
-</div>
-
-<script>
-    function toggleContact() {
-        const card = document.getElementById('contactCard');
-        card.classList.toggle('show');
-    }
-</script>
-
-<style>
-    .contact-float {
-        position: fixed;
-        right: 25px;
-        bottom: 25px;
-        z-index: 999; /* 确保在最上层 */
-    }
-    /* 标签折叠功能样式 */
-.chip.hidden-tag {
-    display: none;
-}
-
-.toggle-tags-btn {
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    cursor: pointer;
-    margin-left: 5px;
-    transition: all 0.3s ease;
-}
-
-.toggle-tags-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(37, 117, 252, 0.4);
-}
-
-/* 移动端适配 */
-@media (max-width: 768px) {
-    .toggle-tags-btn {
-        width: 100%;
-        margin-top: 8px;
-    }
-}
-    .contact-btn {
-        background: linear-gradient(135deg, #4f46e5, #3b82f6); /* 蓝紫色渐变 */
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 30px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-    }
-
-    .contact-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-    }
-
-    .contact-card {
-        position: absolute;
-        right: 0;
-        bottom: 60px; /* 按钮上方 */
-        width: 220px;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-        padding: 20px;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(10px);
-        transition: all 0.3s ease;
-    }
-
-    .contact-card.show {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-
-    .contact-card h4 {
-        margin: 0 0 12px 0;
-        padding-bottom: 8px;
-        border-bottom: 1px solid #eee;
-        color: #333;
-    }
-
-    .contact-card p {
-        margin: 8px 0;
-        font-size: 14px;
-        color: #555;
-    }
-
-    .close-btn {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 22px;
-        color: #999;
-        cursor: pointer;
-        line-height: 1;
-    }
-
-    .close-btn:hover {
-        color: #333;
-    }
-
-    /* 打印时隐藏悬浮按钮 */
-    @media print {
-        .contact-float {
-            display: none;
-        }
-    }
-</style>
-
-  
 </body>
 </html>
