@@ -35,38 +35,6 @@ header p{margin:0;font-size:13px;opacity:.9;}
   font-size:13.5px;cursor:pointer;transition:.15s;white-space:nowrap;}
 .chip:hover{border-color:var(--pri);color:var(--pri);}
 .chip.on{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:700;}
-  /* ── 标签折叠功能 ── */
-.chip.hidden-tag {
-    display: none;
-}
-
-.toggle-tags-btn {
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    cursor: pointer;
-    margin-left: 5px;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.toggle-tags-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(37, 117, 252, 0.4);
-}
-
-.toggle-tags-btn .toggle-icon {
-    font-size: 10px;
-    margin-left: 4px;
-    transition: transform 0.3s ease;
-}
-
-.toggle-tags-btn.expanded .toggle-icon {
-    transform: rotate(180deg);
-}
 #clearAll{margin-left:auto;background:none;border:none;color:var(--warn);font-size:13px;cursor:pointer;text-decoration:underline;}
 
 /* ── 分类块 ── */
@@ -287,11 +255,7 @@ const ROUTE_NAME={iv:"静脉推注",po:"口服",im:"肌注",inh:"雾化吸入",s
 let total=0, flat=[];
 DATA.forEach((g,gi)=>g.items.forEach((it,i)=>{it.cat=g.cat;it.id=gi+'-'+i;flat.push(it);total++;}));
 
-/* ── 分类筛选按钮（按医嘱条数排序） */
-const order=DATA.slice().sort((a,b)=>b.items.length-a.items.length);
-const chips=document.getElementById('chips');
-let act=new Set();
-function renderChips(){/* ── 分类筛选按钮（按医嘱条数排序） ── */
+/* ── 分类筛选按钮（按医嘱条数排序 + 折叠功能） ── */
 const order = DATA.slice().sort((a,b)=>b.items.length-a.items.length);
 const chips = document.getElementById('chips');
 let act = new Set();
@@ -349,15 +313,7 @@ chips.onclick = (e) => {
     
     renderChips(); 
     apply();
-}
-chips.onclick=e=>{
-  const c=e.target.closest('.chip'); if(!c) return;
-  const v=c.dataset.c;
-  if(v==='ALL'){act.clear();}else{act.has(v)?act.delete(v):act.add(v);}
-  if(act.size>3) act=new Set([v]);
-  renderChips(); apply();
 };
-
 /* ── 渲染 ── */
 const list=document.getElementById('list');
 function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
@@ -505,6 +461,38 @@ if(localStorage.getItem('hideNote')==='1') document.getElementById('nt').style.d
             display: none;
         }
     }
+/* ── 标签折叠功能 ── */
+.chip.hidden-tag {
+    display: none;
+}
+
+.toggle-tags-btn {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-left: 5px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.toggle-tags-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(37, 117, 252, 0.4);
+}
+
+.toggle-tags-btn .toggle-icon {
+    font-size: 10px;
+    margin-left: 4px;
+    transition: transform 0.3s ease;
+}
+
+.toggle-tags-btn.expanded .toggle-icon {
+    transform: rotate(180deg);
+}
 </style>
 </body>
 </html>
