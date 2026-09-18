@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>临床常用药医嘱速查表</title>
+<style>
+:root{
+  --bg:#f4f6fa; --card:#ffffff; --ink:#1b2430; --ink2:#5b6879; --line:#e3e8f0;
+  --pri:#1f5fa8; --pri-soft:#eaf1fb; --warn:#c0392b; --warn-soft:#fdecea;
+  --ok:#1e7d5a; --ok-soft:#e7f6ef; --shadow:0 2px 10px rgba(27,36,48,.07);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Microsoft YaHei","PingFang SC","WenQuanYi Micro Hei",-apple-system,sans-serif;
+  font-size:15px; line-height:1.7; -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 60px;}
+
+/* ── 头部 ── */
+header{background:linear-gradient(135deg,#1f5fa8,#2b7fc4);color:#fff;border-radius:14px;padding:22px 24px;box-shadow:var(--shadow);}
+header h1{margin:0 0 6px;font-size:24px;letter-spacing:1px;}
+header p{margin:0;font-size:13px;opacity:.9;}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;}
+.stat{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:4px 14px;font-size:13px;}
+
+/* ── 工具栏 ── */
+.toolbar{position:sticky;top:0;z-index:50;background:rgba(244,246,250,.92);backdrop-filter:blur(6px);
+  padding:12px 0;display:flex;flex-wrap:wrap;gap:10px;align-items:center;border-bottom:1px solid var(--line);}
+#q{order:0;flex:1 1 220px;min-width:180px;padding:9px 14px;border:1px solid var(--line);border-radius:22px;font-size:15px;outline:none;background:#fff;}
+#q:focus{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-soft);}
+.chips{display:flex;flex-wrap:wrap;gap:8px;width:100%;}
+.chip{border:1px solid var(--line);background:#fff;color:var(--ink2);border-radius:18px;padding:5px 14px;
+  font-size:13.5px;cursor:pointer;transition:.15s;white-space:nowrap;}
+.chip:hover{border-color:var(--pri);color:var(--pri);}
+.chip.on{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:700;}
+#clearAll{margin-left:auto;background:none;border:none;color:var(--warn);font-size:13px;cursor:pointer;text-decoration:underline;}
+
+/* ── 分类块 ── */
+section{margin-top:24px;}
+.cat-title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;margin:0 0 12px;padding-left:10px;border-left:5px solid var(--pri);}
+.cat-title .n{font-size:13px;font-weight:400;color:var(--ink2);background:var(--pri-soft);border-radius:12px;padding:1px 10px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:11px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;box-shadow:var(--shadow);
+ box-sizing:border-box;break-inside:avoid;display:flex;flex-direction:column;gap:5px;}
+.card>*{margin:0;}
+.card ul{padding:0;list-style:none;}
+.card li{padding:0;}
+.card .top{display:flex;align-items:flex-start;gap:7px;}
+.card h3{margin:0;font-size:14.6px;font-weight:700;line-height:1.45;flex:1 1 auto;word-break:break-all;}
+.idx{font-size:11.5px;color:#9aa5b4;font-weight:400;flex:0 0 auto;}
+.route{display:inline-block;font-size:11px;font-weight:700;border-radius:5px;padding:1px 6px;flex:0 0 auto;}
+.r-iv{background:#e8f0fc;color:#1f5fa8;}
+.r-po{background:#e9f7ee;color:#1e7d5a;}
+.r-im{background:#fdf0e0;color:#a9710a;}
+.r-inh{background:#f1e9fa;color:#7a4bb5;}
+.r-skin{background:#fde8ef;color:#b03a5b;}
+.r-pump{background:#dff2f4;color:#0e7c86;}
+.body{font-size:13.6px;line-height:1.6;}
+.dose{color:var(--pri);font-weight:700;}
+.freq{color:var(--ok);font-weight:700;}
+.mix{color:var(--ink2);}
+.note{display:block;margin-top:2px;color:var(--warn);font-size:12.3px;font-weight:700;line-height:1.5;}
+.card.hide{display:none;}
+
+/* ── 通用警示 ── */
+.notice{margin-top:24px;background:var(--warn-soft);border:1px solid #f5c6cb;border-radius:12px;padding:14px 18px;font-size:13px;color:#8a2a20;}
+.notice b{font-size:14px;}
+.notice ol{margin:8px 0 0;padding-left:20px;}
+footer{margin-top:26px;text-align:center;color:var(--ink2);font-size:12.5px;}
+
+/* ── 搜索高亮 ── */
+mark{background:#ffe9a8;color:inherit;border-radius:3px;padding:0 1px;}
+.hide{display:none !important;}
+@media(max-width:560px){
+  header h1{font-size:20px;}
+  .cards{grid-template-columns:1fr;}
+  .chip{padding:5px 11px;font-size:13px;}
+}
+@media print{
+  body{background:#fff;font-size:11pt;}
+  .toolbar,.stats{display:none;}
+  .card{box-shadow:none;break-inside:avoid;}
+  section{page-break-inside:avoid;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>临床常用药医嘱速查表</h1>
+  <p>按治疗用途分类 · 含溶媒、剂量、频次与给药途径 · 支持关键词搜索与分类筛选</p>
+  <div class="stats" id="stats"></div>
+</header>
+
+<div class="toolbar">
+  <input id="q" type="search" placeholder="🔍 输入药名 / 病种 / 频次，如：胺碘酮、止血、q8h" autocomplete="off">
+  <div class="chips" id="chips"></div>
+  <button id="clearAll">清除筛选</button>
+  <button id="hideNote" title="隐藏提示">×</button>
+</div>
+
+<main id="list"></main>
+
+
+<footer>整理自《常用药》医嘱记录 · 建议定期由科室质控与临床药师复核更新</footer>
+</div>
+
+<script>
+const DATA = [
+ {cat:"营养心肌",items:[
+  {n:"注射用磷酸肌酸钠 1 g",d:"1 g",f:"bid",r:"iv",way:"iv.drip",mix:"100 ml NS",t:"溶媒"},
+  {n:"注射用环磷腺苷葡胺 90 mg",d:"90 mg ＋ 胰岛素 3 u",f:"qd",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 250 ml",t:"溶媒＋胰岛素"}
+ ]},
+ {cat:"改善循环",items:[
+  {n:"苦碟子注射液",d:"20 ml",f:"qd",r:"iv",way:"iv.drip",mix:"NS 250 ml",t:""},
+  {n:"银杏达莫注射液",d:"20 ml",f:"qd",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 250 ml",t:""},
+  {n:"单硝酸异山梨酯缓释片",d:"30 mg",f:"qd",r:"po",way:"P.O.",mix:"",t:""},
+  {n:"盐酸罂粟碱注射液",d:"90 mg",f:"qd",r:"iv",way:"iv.drip",mix:"NS 250 ml",t:""},
+  {n:"盐酸乌拉地尔注射液",d:"100 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 30 ml",t:"泵速按血压滴定"},
+  {n:"注射用重组人脑利钠肽",d:"1.5 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 50 ml",t:"先给负荷量再维持，监测血压"},
+  {n:"盐酸纳洛酮注射液",d:"4 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 20 ml",t:"用于阿片类过量／镇静过深"},
+  {n:"乳酸米力农注射液",d:"20 ml",f:"—",r:"pump",way:"静脉泵入",mix:"NS 30 ml",t:"先负荷量后维持，监测心率血压"}
+ ]},
+ {cat:"补镁 · 补磷 · 补钙",items:[
+  {n:"硫酸镁注射液（补镁）",d:"2 g",f:"—",r:"pump",way:"静脉泵入",mix:"NS 48 ml",t:"泵入；注意呼吸与膝反射"},
+  {n:"门冬氨酸钾镁片",d:"1 片",f:"qd",r:"po",way:"P.O.",mix:"",t:""},
+  {n:"门冬氨酸钾镁注射液",d:"20 ml",f:"qd",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 250 ml",t:""},
+  {n:"甘油磷酸钠（补磷）",d:"10 ml",f:"qd",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 40 ml",t:""},
+  {n:"葡萄糖酸钙",d:"1 g",f:"—",r:"iv",way:"iv",mix:"NS 10 ml",t:"缓慢推注，勿与洋地黄类同管"}
+ ]},
+ {cat:"补钠 · 补钾",items:[
+  {n:"浓氯化钠",d:"30 ml",f:"—",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"注意浓度与滴速，监测血钠"},
+  {n:"氯化钾",d:"3 g",f:"—",r:"pump",way:"静脉泵入",mix:"NS 20 ml",t:"外周静脉浓度勿过高，监测血钾"}
+ ]},
+ {cat:"降钾",items:[
+  {n:"5% 葡萄糖 ＋ 人胰岛素",d:"胰岛素 6 u",f:"—",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 500 ml",t:"30–60 min 起效，监测血糖防低血糖"}
+ ]},
+ {cat:"利尿",items:[
+  {n:"布美他尼",d:"2 mg",f:"q6h",r:"pump",way:"静脉泵入",mix:"NS 30 ml",t:"q6h 给药"},
+  {n:"托拉塞米",d:"20 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 30 ml",t:"原文「30目录」已校正为 30 ml"},
+  {n:"呋塞米",d:"20 mg",f:"—",r:"iv",way:"iv",mix:"NS 10 ml",t:"静脉推注"}
+ ]},
+ {cat:"抗血小板 · 调脂",items:[
+  {n:"阿司匹林肠溶片",d:"0.1 g",f:"qd",r:"po",way:"P.O.",mix:"餐前",t:"肠溶片空腹吞服"},
+  {n:"硫酸氯吡格雷片",d:"75 mg",f:"qd",r:"po",way:"P.O.",mix:"",t:""},
+  {n:"瑞舒伐他汀钙片",d:"10 mg",f:"qn",r:"po",way:"P.O.",mix:"睡前",t:"QN 睡前"},
+  {n:"阿托伐他汀钙片",d:"20 mg",f:"qn",r:"po",way:"P.O.",mix:"睡前",t:"QN 睡前（原文如此，疑为阿托伐他汀）"}
+ ]},
+ {cat:"降压 · 扩血管",items:[
+  {n:"硝酸甘油",d:"10 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 48 ml",t:"避光，按血压滴定，坐位/卧位给药"},
+  {n:"注射用硝普钠",d:"50 mg",f:"—",r:"pump",way:"静脉泵入",mix:"5% 葡萄糖 50 ml",t:"严格避光，监测血压，警惕氰化物中毒"}
+ ]},
+ {cat:"止血 · 消化道出血",items:[
+  {n:"盐酸奥曲肽注射液",d:"0.2 mg",f:"q4h",r:"pump",way:"静脉泵入",mix:"NS 50 ml",t:"q4h，消化道出血"},
+  {n:"维生素 K1 注射液",d:"10 mg",f:"—",r:"im",way:"im",mix:"",t:"肌注，注意过敏"},
+  {n:"酚磺乙胺注射液",d:"0.5 g",f:"—",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:""},
+  {n:"注射用矛头蝮蛇血凝酶",d:"1 u",f:"—",r:"im",way:"im",mix:"",t:"肌注（亦可静注，按说明书）"},
+  {n:"人纤维蛋白原",d:"1 g",f:"—",r:"iv",way:"iv.drip",mix:"灭菌注射用水 50 ml",t:"溶解后输注，监测纤维蛋白原水平"}
+ ]},
+ {cat:"血管活性药物",items:[
+  {n:"重酒石酸去甲肾上腺素",d:"8 mg",f:"—",r:"pump",way:"静脉泵入",mix:"5% 葡萄糖 36 ml",t:"走中心静脉，按血压滴定"},
+  {n:"重酒石酸去甲肾上腺素",d:"16 mg",f:"—",r:"pump",way:"静脉泵入",mix:"5% 葡萄糖 32 ml",t:"走中心静脉，按血压滴定"},
+  {n:"重酒石酸去甲肾上腺素",d:"32 mg",f:"—",r:"pump",way:"静脉泵入",mix:"5% 葡萄糖 24 ml",t:"走中心静脉，按血压滴定"},
+  {n:"垂体后叶素",d:"3 ml",f:"—",r:"pump",way:"静脉泵入",mix:"NS 15 ml",t:"警惕冠脉/内脏缺血、高血压"},
+  {n:"盐酸多巴胺注射液",d:"200 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 40 ml",t:"剂量依体重与目标调整"},
+  {n:"盐酸艾司洛尔",d:"0.5 g",f:"—",r:"pump",way:"静脉泵入",mix:"",t:"超短效 β1 阻滞剂，滴定给药"}
+ ]},
+ {cat:"抢救",items:[
+  {n:"硫酸阿托品注射液",d:"1 mg",f:"—",r:"iv",way:"iv",mix:"",t:"静脉推注，抢救用药"},
+  {n:"盐酸肾上腺素注射液",d:"1 mg",f:"—",r:"iv",way:"iv",mix:"",t:"静脉推注，心肺复苏首选"},
+  {n:"碳酸氢钠注射液",d:"250 ml",f:"—",r:"iv",way:"iv.drip",mix:"",t:"纠正严重酸中毒，监测血气"}
+ ]},
+ {cat:"抗心律失常",items:[
+  {n:"盐酸胺碘酮注射液",d:"150 mg",f:"—",r:"iv",way:"iv",mix:"5% 葡萄糖 20 ml",t:"静脉推注（15–30 min）"},
+  {n:"盐酸胺碘酮注射液",d:"300 mg",f:"—",r:"pump",way:"静脉泵入",mix:"5% 葡萄糖 44 ml",t:"前 6 h 10 ml/h，后 5 ml/h"},
+  {n:"丙戊酸钠注射用浓溶液",d:"0.6 g",f:"—",r:"pump",way:"静脉泵入",mix:"NS 44 ml",t:"抗癫痫／躁动，监测血药浓度"}
+ ]},
+ {cat:"强心 · 正性肌力",items:[
+  {n:"左西孟旦注射液",d:"6.25 mg",f:"—",r:"pump",way:"静脉泵入",mix:"5% 葡萄糖 47.5 ml",t:"按说明书给负荷量后维持"}
+ ]},
+ {cat:"镇静 · 镇痛 · 肌松",items:[
+  {n:"咪达唑仑注射液",d:"50 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 40 ml",t:"镇静，滴定至目标 RASS"},
+  {n:"枸橼酸舒芬太尼注射液",d:"100 μg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 48 ml",t:"镇痛，警惕呼吸抑制"},
+  {n:"盐酸右美托咪定注射液",d:"0.2 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 48 ml",t:"镇静，负荷量后维持"},
+  {n:"丙泊酚注射液",d:"500 mg",f:"—",r:"pump",way:"静脉泵入",mix:"",t:"镇静/麻醉，需气道支持条件"},
+  {n:"注射用盐酸瑞芬太尼",d:"4 mg",f:"—",r:"pump",way:"静脉泵入",mix:"",t:"超短效镇痛，按体重滴定"},
+  {n:"尼可刹米注射液",d:"1875 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 42.5 ml",t:"呼吸兴奋，针对中枢抑制"}
+ ]},
+ {cat:"保肝",items:[
+  {n:"复方甘草酸苷注射液",d:"100 ml",f:"qd",r:"iv",way:"iv.drip",mix:"NS 150 ml",t:""},
+  {n:"多烯磷脂酰胆碱注射液",d:"20 ml",f:"qd",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 100 ml",t:""},
+  {n:"谷胱甘肽",d:"2.4 g",f:"—",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:""},
+  {n:"甘草酸二铵",d:"0.15 g",f:"st",r:"iv",way:"iv.drip",mix:"10% 葡萄糖 250 ml",t:"st 即刻"}
+ ]},
+ {cat:"祛痰 · 平喘 · 雾化",items:[
+  {n:"痰热清注射液",d:"30 ml",f:"qd",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"中药注射剂，单独输注"},
+  {n:"多索茶碱注射液",d:"0.3 g",f:"qd",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 100 ml",t:""},
+  {n:"二羟丙茶碱",d:"0.3 g",f:"bid",r:"iv",way:"iv.drip",mix:"葡萄糖 50 ml",t:""},
+  {n:"氨溴索注射液",d:"15 mg",f:"bid",r:"iv",way:"iv.drip",mix:"NS 50 ml",t:""},
+  {n:"乙酰半胱氨酸片",d:"0.6 g",f:"bid",r:"po",way:"po",mix:"",t:"咳嗽／祛痰"},
+  {n:"雾化：布地奈德＋异丙托溴铵＋特布他林＋乙酰半胱氨酸",d:"1 mg ＋ 0.5 mg ＋ 2.5 mg ＋ 0.3 g",f:"bid",r:"inh",way:"雾化吸入",mix:"",t:"四联雾化，注意吸入后漱口"}
+ ]},
+ {cat:"止吐 · 胃肠",items:[
+  {n:"昂丹司琼注射液",d:"8 mg",f:"—",r:"iv",way:"iv",mix:"NS 10 ml",t:"止吐"},
+  {n:"甲氧氯普胺（胃痛）",d:"10 mg",f:"—",r:"im",way:"im",mix:"",t:"肌注，注意锥体外系反应"},
+  {n:"奥美拉唑",d:"40 mg",f:"qd",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"抑酸"},
+  {n:"间苯三酚（腹痛）",d:"40 mg",f:"—",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 250 ml",t:"解痉"}
+ ]},
+ {cat:"抗感染",items:[
+  {n:"头孢哌酮钠/舒巴坦钠",d:"3 g",f:"q8h",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"监测凝血功能、酒精双硫仑反应"},
+  {n:"头孢曲松钠",d:"1 g",f:"qd",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"禁与含钙溶液（含林格、钙剂）同管"},
+  {n:"氨曲南",d:"1 g",f:"bid",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:""},
+  {n:"美罗培南",d:"1 g",f:"q8h",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"注意输注时长与癫痫发作风险"},
+  {n:"替加环素",d:"50 mg",f:"q12h",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:""},
+  {n:"替考拉宁",d:"200 mg",f:"—",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"首剂负荷后 qd/qod 维持，监测谷浓度"},
+  {n:"万古霉素",d:"1 g",f:"q12h",r:"iv",way:"iv.drip",mix:"NS 200 ml",t:"监测谷浓度与肾功能"},
+  {n:"多粘菌素 B",d:"50 万 u",f:"bid",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"注意肾毒性、神经毒性"},
+  {n:"多粘菌素 E（黏菌素）",d:"150 mg",f:"q12h",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"注意肾毒性，按产品说明书换算"},
+  {n:"卡泊芬净",d:"50 mg",f:"qd",r:"iv",way:"iv.drip",mix:"NS 250 ml",t:"首日常需负荷量 70 mg"},
+  {n:"艾莎康唑",d:"200 mg",f:"qd",r:"iv",way:"iv.drip",mix:"NS 250 ml",t:"注意输注反应与肝功能"},
+  {n:"泊沙康唑",d:"0.3 g",f:"qd",r:"iv",way:"iv.drip",mix:"NS 150 ml",t:"需负荷剂量方案，见说明书"},
+  {n:"替硝唑氯化钠注射液",d:"0.8 g",f:"qd",r:"iv",way:"iv.drip",mix:"",t:"硝基咪唑类，用药期间禁酒"}
+ ]},
+ {cat:"口服抗感染",items:[
+  {n:"头孢地尼胶囊",d:"0.1 g",f:"tid",r:"po",way:"po",mix:"",t:""},
+  {n:"阿奇霉素胶囊",d:"0.5 g",f:"qd",r:"po",way:"po",mix:"",t:""},
+  {n:"阿莫西林胶囊",d:"0.5 g",f:"tid",r:"po",way:"po",mix:"",t:""},
+  {n:"米诺环素胶囊",d:"100 mg",f:"bid",r:"po",way:"po",mix:"",t:"光敏反应，多喝水"}
+ ]},
+ {cat:"血液系统",items:[
+  {n:"蔗糖铁",d:"0.1 g",f:"qod",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"qod 隔日，试验剂量后给药"}
+ ]},
+ {cat:"降尿酸",items:[
+  {n:"碳酸氢钠片",d:"0.5 g",f:"tid",r:"po",way:"P.O.",mix:"",t:"碱化尿液"},
+  {n:"非布司他片",d:"20 mg",f:"qd",r:"po",way:"P.O.",mix:"",t:"监测肝肾功能"}
+ ]},
+ {cat:"其他",items:[
+  {n:"硫辛酸",d:"0.6 g",f:"qd",r:"iv",way:"iv.drip",mix:"NS 250 ml",t:""},
+  {n:"荆防颗粒",d:"1 袋",f:"tid",r:"po",way:"po",mix:"",t:"感冒"},
+  {n:"西酞普兰片（抗焦虑）",d:"20 mg",f:"qd",r:"po",way:"P.O.",mix:"",t:"注意 QT 延长与出血风险"}
+ ]},
+ {cat:"青霉素皮试",items:[
+  {n:"注射用青霉素钠（皮试液）",d:"80 万 u",f:"—",r:"skin",way:"皮试",mix:"NS 10 ml",t:"皮试配置，取 0.1 ml 皮内注射"}
+ ]},
+ {cat:"泻药 · 肠道准备",items:[
+  {n:"西甲硅油乳剂 ＋ 复方聚乙二醇电解质散",d:"2 ml ＋ 4 袋",f:"—",r:"po",way:"po",mix:"加水配服",t:"肠道准备／腹胀排气"}
+ ]}
+];
+
+const ROUTE_NAME={iv:"静脉滴注/推注",po:"口服",im:"肌注",inh:"雾化吸入",skin:"皮试",pump:"静脉泵入"};
+let total=0, flat=[];
+DATA.forEach((g,gi)=>g.items.forEach((it,i)=>{it.cat=g.cat;it.id=gi+'-'+i;flat.push(it);total++;}));
+
+/* ── 分类筛选按钮（按医嘱条数排序） */
+const order=DATA.slice().sort((a,b)=>b.items.length-a.items.length);
+const chips=document.getElementById('chips');
+let act=new Set();
+function renderChips(){
+  chips.innerHTML='<span class="chip'+(act.size?'':' on')+'" data-c="ALL">全部</span>'+
+  order.map(g=>'<span class="chip'+(act.has(g.cat)?' on':'')+'" data-c="'+g.cat+'">'+g.cat+
+  ' <b style="opacity:.6;font-weight:400">'+g.items.length+'</b></span>').join('');
+}
+chips.onclick=e=>{
+  const c=e.target.closest('.chip'); if(!c) return;
+  const v=c.dataset.c;
+  if(v==='ALL'){act.clear();}else{act.has(v)?act.delete(v):act.add(v);}
+  if(act.size>3) act=new Set([v]);
+  renderChips(); apply();
+};
+
+/* ── 渲染 ── */
+const list=document.getElementById('list');
+function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function hl(s,kw){return kw?esc(s).replace(new RegExp('('+kw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>'):esc(s);}
+function render(){
+  let html='';
+  DATA.forEach(g=>{
+    let cards='';
+    g.items.forEach((it,i)=>{
+      cards+='<div class="card">'+
+        '<div class="top"><h3><span class="idx">'+String(i+1).padStart(2,'0')+'</span>'+hl(it.n,'')+'</h3>'+
+        '<span class="route r-'+it.r+'">'+ROUTE_NAME[it.r]+'</span></div>'+
+        '<div class="body"><span class="dose">'+hl(it.d,'')+'</span>'+(it.f!=='—'?'　<span class="freq">'+it.f+'</span>':'')+
+        '<br><span class="mix">'+(it.mix?hl(it.mix,'')+'　':'')+it.way+'</span>'+(it.t?'<span class="note">⚑ '+it.t+'</span>':'')+
+        '</div></div>';
+    });
+    html+='<section data-cat="'+g.cat+'"><h2 class="cat-title">'+g.cat+' <span class="n">'+g.items.length+' 条</span></h2><div class="cards">'+cards+'</div></section>';
+  });
+  list.innerHTML=html;
+}
+render(); renderChips();
+
+/* ── 搜索 + 筛选 ── */
+const q=document.getElementById('q');
+function apply(){
+  let n=0;
+  const kw=q.value.trim();
+  document.querySelectorAll('#list section').forEach(sec=>{
+    const cat=sec.dataset.cat;
+    let vis=0;
+    if(act.size && !act.has(cat)){sec.classList.add('hide');return;}
+    sec.classList.remove('hide');
+    sec.querySelectorAll('.card').forEach(c=>{
+      const ok=!kw||c.textContent.toLowerCase().includes(kw.toLowerCase());
+      c.classList.toggle('hide',!ok); if(ok)vis++;
+    });
+    if(!vis){sec.classList.add('hide');} else {n+=vis;}
+  });
+  document.getElementById('match').textContent='匹配 '+n+' 条';
+}
+q.addEventListener('input',apply);
+document.getElementById('clearAll').onclick=()=>{q.value='';act.clear();renderChips();apply();};
+document.getElementById('hideNote').onclick=()=>{
+  const n=document.getElementById('nt'); n.style.display='none';
+  try{localStorage.setItem('hideNote','1');}catch(e){}
+};
+if(localStorage.getItem('hideNote')==='1') document.getElementById('nt').style.display='none';</script>
+</body>
+</html>
