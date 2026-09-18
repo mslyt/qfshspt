@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>千佛山医院 · 科室常用医嘱导航</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root{
+    --green-700:#1a7f50;
+    --green-500:#2e9e68;
+    --green-050:#eef8f1;
+    --ink:#1f2a24;
+    --ink-2:#5b6b62;
+    --line:#e2ede6;
+    --white:#fff;
+    --shadow:0 2px 8px rgba(20,80,50,.07);
+  }
+  body{
+    font-family:"Microsoft YaHei","PingFang SC","WenQuanYi Micro Hei",sans-serif;
+    background:var(--green-050);color:var(--ink);line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 14px 40px;}
+
+  /* 顶部栏 */
+  header{
+    background:linear-gradient(120deg,var(--green-700),var(--green-500));
+    color:#fff;padding:16px 0 14px;box-shadow:var(--shadow);
+  }
+  .brand{display:flex;align-items:center;gap:10px;}
+  .logo{
+    width:38px;height:38px;border-radius:9px;background:rgba(255,255,255,.18);
+    display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;
+    border:1.5px solid rgba(255,255,255,.45);flex:0 0 auto;
+  }
+  .brand-text h1{font-size:17px;font-weight:600;letter-spacing:.5px;}
+  .brand-text p{font-size:11.5px;opacity:.85;margin-top:1px;}
+
+  /* 搜索 */
+  .search-box{margin-top:12px;position:relative;}
+  .search-box input{
+    width:100%;padding:10px 40px 10px 36px;border-radius:11px;border:none;
+    font-size:14.5px;color:var(--ink);background:rgba(255,255,255,.95);
+    box-shadow:var(--shadow);outline:none;
+  }
+  .search-box input::placeholder{color:#9bb0a2;}
+  .search-box input:focus{box-shadow:0 0 0 3px rgba(255,255,255,.4),var(--shadow);}
+  .icon-search{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:17px;height:17px;opacity:.5;}
+  .icon-search::before{content:"";position:absolute;width:10px;height:10px;border:2px solid var(--green-700);border-radius:50%;top:0;left:0;}
+  .icon-search::after{content:"";position:absolute;width:2px;height:5px;background:var(--green-700);transform:rotate(-45deg);bottom:-1px;right:2px;}
+  .clear-btn{
+    position:absolute;right:9px;top:50%;transform:translateY(-50%);
+    border:none;background:#e3f2e9;color:var(--green-700);
+    width:24px;height:24px;border-radius:50%;font-size:14px;cursor:pointer;display:none;
+    align-items:center;justify-content:center;line-height:1;
+  }
+  .clear-btn.show{display:flex;}
+
+  /* 工具条 */
+  .toolbar{
+    display:flex;align-items:center;justify-content:space-between;
+    margin:10px 2px 2px;font-size:12.5px;color:var(--ink-2);
+  }
+  .count b{color:var(--green-700);font-size:14px;}
+  .actions{display:flex;gap:7px;}
+  .chip{
+    border:1px solid var(--line);background:var(--white);color:var(--ink-2);
+    padding:4px 11px;border-radius:20px;font-size:12px;cursor:pointer;transition:.15s;
+  }
+  .chip:hover{border-color:var(--green-500);color:var(--green-700);}
+  .chip.on{background:var(--green-700);border-color:var(--green-700);color:#fff;}
+
+  /* 科室网格 —— 紧凑 */
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));
+    gap:9px;margin-top:11px;
+  }
+  .card{
+    background:var(--white);border-radius:11px;padding:11px 12px;
+    box-shadow:var(--shadow);border:1px solid var(--line);
+    cursor:pointer;transition:.15s;position:relative;overflow:hidden;
+    display:flex;align-items:center;gap:9px;
+  }
+  .card::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--green-500);
+  }
+  .card:hover{transform:translateY(-2px);border-color:var(--green-300);box-shadow:0 5px 14px rgba(20,80,50,.12);}
+  .card:active{transform:translateY(0);}
+  .num{
+    flex:0 0 auto;width:26px;height:26px;border-radius:8px;
+    background:var(--green-050);color:var(--green-700);
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+  }
+  .info{flex:1;min-width:0;}
+  .info h3{font-size:14.5px;font-weight:600;color:var(--ink);}
+
+  /* 空状态 */
+  .empty{text-align:center;padding:36px 20px;color:var(--ink-2);display:none;}
+  .empty .e-icon{font-size:34px;opacity:.5;margin-bottom:6px;}
+  .empty p{font-size:13px;}
+
+  footer{text-align:center;font-size:11.5px;color:#93a69c;margin-top:24px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo">千</div>
+      <div class="brand-text">
+        <h1>山东第一医科大学第一附属医院（千佛山医院）</h1>
+        <p>规培医师 · 各科室常用医嘱速查导航</p>
+      </div>
+    </div>
+    <div class="search-box">
+      <span class="icon-search"></span>
+      <!-- 搜索框：输入科室名或关键词实时筛选 -->
+      <input id="searchInput" type="text" placeholder="搜索科室，如：心内、ICU、消化…" autocomplete="off">
+      <button class="clear-btn" id="clearBtn">×</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toolbar">
+    <div class="count">共 <b id="total">0</b> 个科室 · 显示 <b id="shown">0</b> 个</div>
+    <div class="actions">
+      <span class="chip on" data-filter="all">全部</span>
+      <span class="chip" data-filter="inpatient">住院</span>
+      <span class="chip" data-filter="outpatient">门诊</span>
+    </div>
+  </div>
+
+  <!-- 科室卡片容器 -->
+  <div class="grid" id="grid"></div>
+
+  <!-- 无匹配结果时的空状态 -->
+  <div class="empty" id="empty">
+    <div class="e-icon">🔍</div>
+    <p>没有找到匹配的科室，换个关键词试试</p>
+  </div>
+
+  <footer>千佛山医院规培医师自用工具 · 内容仅供工作参考，具体以临床实际与最新诊疗规范为准</footer>
+</div>
+
+<script>
+  /* ============================================================
+   * 科室数据配置区
+   * 字段说明：
+   *   name  —— 科室名称（显示在卡片上）
+   *   type  —— 分类：inpatient 住院 / outpatient 门诊（用于顶部筛选）
+   *   url   —— 点击卡片后跳转的目标页面
+   *             ★ 当前各科室明细页尚未制作，故统一留空（值为 ''）
+   *             ★ 待明细页做好后，把对应 HTML 文件名填到 url 即可，
+   *               例如：url: 'xinxinneike.html'
+   *             ★ 若希望先在新标签页打开，可把 onclick 里的
+   *               window.location.href 改为 window.open
+   * ============================================================ */
+  const departments = [
+    { name: "心内科",       type: "inpatient", url: "" },
+    { name: "呼吸内科",     type: "inpatient", url: "" },
+    { name: "消化内科",     type: "inpatient", url: "" },
+    { name: "神经内科",     type: "inpatient", url: "" },
+    { name: "血液内科",     type: "inpatient", url: "" },
+    { name: "内分泌科",     type: "inpatient", url: "" },
+    { name: "肾内科",       type: "inpatient", url: "" },
+    { name: "风湿免疫科",   type: "inpatient", url: "" },
+    { name: "皮肤科",       type: "inpatient", url: "" },
+    { name: "肿瘤微创",     type: "inpatient", url: "" },
+    { name: "肿瘤内科",     type: "inpatient", url: "" },
+    { name: "保健综合",     type: "inpatient", url: "" },
+    { name: "ICU",          type: "inpatient", url: "" },
+    { name: "感染科",       type: "inpatient", url: "" },
+    { name: "内科门诊",     type: "outpatient", url: "" }
+  ];
+
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  const totalEl = document.getElementById('total');
+  const shownEl = document.getElementById('shown');
+  const searchInput = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('clearBtn');
+
+  let currentFilter = 'all';
+
+  /* 渲染卡片列表 */
+  function render(list) {
+    grid.innerHTML = list.map((d) => {
+      const idx = departments.indexOf(d) + 1;
+      return `
+      <div class="card" data-name="${d.name}" data-type="${d.type}" data-url="${d.url}">
+        <div class="num">${String(idx).padStart(2, '0')}</div>
+        <div class="info">
+          <h3>${d.name}</h3>
+        </div>
+      </div>`;
+    }).join('');
+
+    shownEl.textContent = list.length;
+    empty.style.display = list.length ? 'none' : 'block';
+
+    /* 卡片点击事件 —— 跳转到科室明细页
+     *   ★ 当前 url 留空，点击时给出提示，避免误以为页面无响应
+     *   ★ 后续把 departments 里的 url 填上真实文件名即可自动跳转 */
+    grid.querySelectorAll('.card').forEach(c => {
+      c.addEventListener('click', () => {
+        const target = c.dataset.url;
+        if (!target) {
+          // TODO: 明细页就绪后删除此分支
+          alert('【' + c.dataset.name + '】明细页尚未配置（url 为空）\n请在源码 departments 中填入跳转地址。');
+          return;
+        }
+        window.location.href = target;   // 当前窗口跳转
+        // window.open(target, '_blank'); // 若需新标签页打开，改用此行
+      });
+    });
+  }
+
+  /* 筛选 + 搜索 联合匹配 */
+  function match() {
+    const kw = searchInput.value.trim().toLowerCase();
+    const list = departments.filter(d => {
+      const okFilter = (currentFilter === 'all') || (d.type === currentFilter);
+      const okKw = !kw || d.name.toLowerCase().includes(kw);
+      return okFilter && okKw;
+    });
+    render(list);
+  }
+
+  totalEl.textContent = departments.length;
+  render(departments);
+
+  // 搜索输入
+  searchInput.addEventListener('input', () => {
+    clearBtn.classList.toggle('show', searchInput.value.length > 0);
+    match();
+  });
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    clearBtn.classList.remove('show');
+    match();
+  });
+
+  // 分类筛选
+  document.querySelectorAll('.chip').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+      c.classList.add('on');
+      currentFilter = c.dataset.filter;
+      match();
+    });
+  });
+</script>
+</body>
+</html>
