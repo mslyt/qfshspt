@@ -319,5 +319,109 @@ document.getElementById('hideNote').onclick=()=>{
   try{localStorage.setItem('hideNote','1');}catch(e){}
 };
 if(localStorage.getItem('hideNote')==='1') document.getElementById('nt').style.display='none';</script>
+
+<!-- 联系我们 悬浮按钮 -->
+<div class="contact-float">
+    <button class="contact-btn" onclick="toggleContact()">
+        💬 联系我们
+    </button>
+    <div class="contact-card" id="contactCard">
+        <h4>联系信息</h4>
+        <p><strong>邮箱：</strong>Anchorage321@yeah.net</p>
+        <p><strong>有如补充更正请联系</strong></p>
+       <span class="close-btn" onclick="toggleContact()">×</span>
+    </div>
+</div>
+
+<script>
+    function toggleContact() {
+        const card = document.getElementById('contactCard');
+        card.classList.toggle('show');
+    }
+</script>
+
+<style>
+    .contact-float {
+        position: fixed;
+        right: 25px;
+        bottom: 25px;
+        z-index: 999; /* 确保在最上层 */
+    }
+
+    .contact-btn {
+        background: linear-gradient(135deg, #4f46e5, #3b82f6); /* 蓝紫色渐变 */
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 30px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .contact-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .contact-card {
+        position: absolute;
+        right: 0;
+        bottom: 60px; /* 按钮上方 */
+        width: 220px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        padding: 20px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+    }
+
+    .contact-card.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .contact-card h4 {
+        margin: 0 0 12px 0;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #eee;
+        color: #333;
+    }
+
+    .contact-card p {
+        margin: 8px 0;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 22px;
+        color: #999;
+        cursor: pointer;
+        line-height: 1;
+    }
+
+    .close-btn:hover {
+        color: #333;
+    }
+
+    /* 打印时隐藏悬浮按钮 */
+    @media print {
+        .contact-float {
+            display: none;
+        }
+    }
+</style>
+
+  
 </body>
 </html>
