@@ -35,6 +35,38 @@ header p{margin:0;font-size:13px;opacity:.9;}
   font-size:13.5px;cursor:pointer;transition:.15s;white-space:nowrap;}
 .chip:hover{border-color:var(--pri);color:var(--pri);}
 .chip.on{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:700;}
+  /* ── 标签折叠功能 ── */
+.chip.hidden-tag {
+    display: none;
+}
+
+.toggle-tags-btn {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-left: 5px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.toggle-tags-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(37, 117, 252, 0.4);
+}
+
+.toggle-tags-btn .toggle-icon {
+    font-size: 10px;
+    margin-left: 4px;
+    transition: transform 0.3s ease;
+}
+
+.toggle-tags-btn.expanded .toggle-icon {
+    transform: rotate(180deg);
+}
 #clearAll{margin-left:auto;background:none;border:none;color:var(--warn);font-size:13px;cursor:pointer;text-decoration:underline;}
 
 /* ── 分类块 ── */
@@ -260,16 +292,64 @@ const order=DATA.slice().sort((a,b)=>b.items.length-a.items.length);
 const chips=document.getElementById('chips');
 let act=new Set();
 function renderChips(){
-  chips.innerHTML='<span class="chip'+(act.size?'':' on')+'" data-c="ALL">全部</span>'+
-  order.map(g=>'<span class="chip'+(act.has(g.cat)?' on':'')+'" data-c="'+g.cat+'">'+g.cat+
-  ' <b style="opacity:.6;font-weight:400">'+g.items.length+'</b></span>').join('');
+ /* ── 分类筛选按钮（按医嘱条数排序） ── */
+const order = DATA.slice().sort((a,b)=>b.items.length-a.items.length);
+const chips = document.getElementById('chips');
+let act = new Set();
+
+// 【新增】折叠控制变量
+const defaultVisibleCount = 8;  // 默认显示的标签数量（含"全部"）
+let isExpanded = false;          // 初始状态：折叠
+
+function renderChips(){
+    // 生成标签HTML
+    let chipsHTML = '<span class="chip'+(act.size?'':' on')+'" data-c="ALL">全部</span>';
+    
+    order.forEach((g, index) => {
+        // 超过默认数量且未展开时，添加隐藏类
+        const hiddenClass = (!isExpanded && index >= defaultVisibleCount) ? ' hidden-tag' : '';
+        
+        chipsHTML += '<span class="chip'+(act.has(g.cat)?' on':'')+hiddenClass+'" data-c="'+g.cat+'">'+
+                     g.cat+' <b style="opacity:.6;font-weight:400">'+g.items.length+'</b></span>';
+    });
+    
+    // 如果分类总数超过默认值，追加"展开/收起"按钮
+    if (order.length > defaultVisibleCount) {
+        const btnText = isExpanded ? '收起 ▲' : '展开更多 ▼';
+        chipsHTML += '<button class="toggle-tags-btn" id="toggleTagsBtn">'+
+                     '<span class="toggle-text">'+btnText+'</span>'+
+                     '<span class="toggle-icon">▼</span></button>';
+    }
+    
+    chips.innerHTML = chipsHTML;
+    
+    // 【新增】为展开按钮绑定事件
+    const toggleBtn = document.getElementById('toggleTagsBtn');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();  // 阻止事件冒泡，避免触发标签筛选
+            isExpanded = !isExpanded;
+            renderChips();
+            apply();  // 重新应用筛选，确保显示正确
+        });
+    }
 }
-chips.onclick=e=>{
-  const c=e.target.closest('.chip'); if(!c) return;
-  const v=c.dataset.c;
-  if(v==='ALL'){act.clear();}else{act.has(v)?act.delete(v):act.add(v);}
-  if(act.size>3) act=new Set([v]);
-  renderChips(); apply();
+
+chips.onclick = (e) => {
+    const c = e.target.closest('.chip'); 
+    if (!c) return;
+    
+    const v = c.dataset.c;
+    if (v === 'ALL') {
+        act.clear();
+    } else {
+        act.has(v) ? act.delete(v) : act.add(v);
+    }
+    
+    if (act.size > 3) act = new Set([v]);
+    
+    renderChips(); 
+    apply();
 };
 
 /* ── 渲染 ── */
