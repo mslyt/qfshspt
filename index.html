@@ -111,14 +111,14 @@ mark{background:#ffe9a8;color:inherit;border-radius:3px;padding:0 1px;}
 <script>
 const DATA = [
  {cat:"营养心肌",items:[
-  {n:"注射用磷酸肌酸钠 1 g",d:"1 g",f:"bid",r:"iv",way:"iv.drip",mix:"100 ml NS",t:"溶媒"},
-  {n:"注射用环磷腺苷葡胺 90 mg",d:"90 mg ＋ 胰岛素 3 u",f:"qd",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 250 ml",t:"溶媒＋胰岛素"}
+  {n:"注射用磷酸肌酸钠 1 g",d:"1 g",f:"bid",r:"ivdrip",way:"iv.drip",mix:"100 ml NS",t:""},
+  {n:"注射用环磷腺苷葡胺 90 mg",d:"90 mg ＋ 胰岛素 3 u",f:"qd",r:"iv.drip",way:"iv.drip",mix:"5% 葡萄糖 250 ml",t:""}
  ]},
  {cat:"改善循环",items:[
-  {n:"苦碟子注射液",d:"20 ml",f:"qd",r:"iv",way:"iv.drip",mix:"NS 250 ml",t:""},
-  {n:"银杏达莫注射液",d:"20 ml",f:"qd",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 250 ml",t:""},
+  {n:"苦碟子注射液",d:"20 ml",f:"qd",r:"ivdrip",way:"iv.drip",mix:"NS 250 ml",t:""},
+  {n:"银杏达莫注射液",d:"20 ml",f:"qd",r:"ivdrip",way:"iv.drip",mix:"5% 葡萄糖 250 ml",t:""},
   {n:"单硝酸异山梨酯缓释片",d:"30 mg",f:"qd",r:"po",way:"P.O.",mix:"",t:""},
-  {n:"盐酸罂粟碱注射液",d:"90 mg",f:"qd",r:"iv",way:"iv.drip",mix:"NS 250 ml",t:""},
+  {n:"盐酸罂粟碱注射液",d:"90 mg",f:"qd",r:"ivdrip",way:"iv.drip",mix:"NS 250 ml",t:""},
   {n:"盐酸乌拉地尔注射液",d:"100 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 30 ml",t:"泵速按血压滴定"},
   {n:"注射用重组人脑利钠肽",d:"1.5 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 50 ml",t:"先给负荷量再维持，监测血压"},
   {n:"盐酸纳洛酮注射液",d:"4 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 20 ml",t:"用于阿片类过量／镇静过深"},
@@ -127,16 +127,16 @@ const DATA = [
  {cat:"补镁 · 补磷 · 补钙",items:[
   {n:"硫酸镁注射液（补镁）",d:"2 g",f:"—",r:"pump",way:"静脉泵入",mix:"NS 48 ml",t:"泵入；注意呼吸与膝反射"},
   {n:"门冬氨酸钾镁片",d:"1 片",f:"qd",r:"po",way:"P.O.",mix:"",t:""},
-  {n:"门冬氨酸钾镁注射液",d:"20 ml",f:"qd",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 250 ml",t:""},
-  {n:"甘油磷酸钠（补磷）",d:"10 ml",f:"qd",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 40 ml",t:""},
+  {n:"门冬氨酸钾镁注射液",d:"20 ml",f:"qd",r:"ivdrip",way:"iv.drip",mix:"5% 葡萄糖 250 ml",t:""},
+  {n:"甘油磷酸钠（补磷）",d:"10 ml",f:"qd",r:"ivdrip",way:"iv.drip",mix:"5% 葡萄糖 40 ml",t:""},
   {n:"葡萄糖酸钙",d:"1 g",f:"—",r:"iv",way:"iv",mix:"NS 10 ml",t:"缓慢推注，勿与洋地黄类同管"}
  ]},
  {cat:"补钠 · 补钾",items:[
-  {n:"浓氯化钠",d:"30 ml",f:"—",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"注意浓度与滴速，监测血钠"},
+  {n:"浓氯化钠",d:"30 ml",f:"—",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:"注意浓度与滴速，监测血钠"},
   {n:"氯化钾",d:"3 g",f:"—",r:"pump",way:"静脉泵入",mix:"NS 20 ml",t:"外周静脉浓度勿过高，监测血钾"}
  ]},
  {cat:"降钾",items:[
-  {n:"5% 葡萄糖 ＋ 人胰岛素",d:"胰岛素 6 u",f:"—",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 500 ml",t:"30–60 min 起效，监测血糖防低血糖"}
+  {n:"5% 葡萄糖 ＋ 人胰岛素",d:"胰岛素 6 u",f:"—",r:"ivdrip",way:"iv.drip",mix:"5% 葡萄糖 500 ml",t:"30–60 min 起效，监测血糖防低血糖"}
  ]},
  {cat:"利尿",items:[
   {n:"布美他尼",d:"2 mg",f:"q6h",r:"pump",way:"静脉泵入",mix:"NS 30 ml",t:"q6h 给药"},
@@ -166,12 +166,12 @@ const DATA = [
   {n:"重酒石酸去甲肾上腺素",d:"32 mg",f:"—",r:"pump",way:"静脉泵入",mix:"5% 葡萄糖 24 ml",t:"走中心静脉，按血压滴定"},
   {n:"垂体后叶素",d:"3 ml",f:"—",r:"pump",way:"静脉泵入",mix:"NS 15 ml",t:"警惕冠脉/内脏缺血、高血压"},
   {n:"盐酸多巴胺注射液",d:"200 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 40 ml",t:"剂量依体重与目标调整"},
-  {n:"盐酸艾司洛尔",d:"0.5 g",f:"—",r:"pump",way:"静脉泵入",mix:"",t:"超短效 β1 阻滞剂，滴定给药"}
+  {n:"盐酸艾司洛尔",d:"0.5 g",f:"—",r:"pump",way:"静脉泵入",mix:"",t:""}
  ]},
  {cat:"抢救",items:[
   {n:"硫酸阿托品注射液",d:"1 mg",f:"—",r:"iv",way:"iv",mix:"",t:"静脉推注，抢救用药"},
   {n:"盐酸肾上腺素注射液",d:"1 mg",f:"—",r:"iv",way:"iv",mix:"",t:"静脉推注，心肺复苏首选"},
-  {n:"碳酸氢钠注射液",d:"250 ml",f:"—",r:"iv",way:"iv.drip",mix:"",t:"纠正严重酸中毒，监测血气"}
+  {n:"碳酸氢钠注射液",d:"250 ml",f:"—",r:"ivdrip",way:"iv.drip",mix:"",t:"纠正严重酸中毒，监测血气"}
  ]},
  {cat:"抗心律失常",items:[
   {n:"盐酸胺碘酮注射液",d:"150 mg",f:"—",r:"iv",way:"iv",mix:"5% 葡萄糖 20 ml",t:"静脉推注（15–30 min）"},
@@ -190,39 +190,39 @@ const DATA = [
   {n:"尼可刹米注射液",d:"1875 mg",f:"—",r:"pump",way:"静脉泵入",mix:"NS 42.5 ml",t:"呼吸兴奋，针对中枢抑制"}
  ]},
  {cat:"保肝",items:[
-  {n:"复方甘草酸苷注射液",d:"100 ml",f:"qd",r:"iv",way:"iv.drip",mix:"NS 150 ml",t:""},
-  {n:"多烯磷脂酰胆碱注射液",d:"20 ml",f:"qd",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 100 ml",t:""},
-  {n:"谷胱甘肽",d:"2.4 g",f:"—",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:""},
-  {n:"甘草酸二铵",d:"0.15 g",f:"st",r:"iv",way:"iv.drip",mix:"10% 葡萄糖 250 ml",t:"st 即刻"}
+  {n:"复方甘草酸苷注射液",d:"100 ml",f:"qd",r:"ivdrip",way:"iv.drip",mix:"NS 150 ml",t:""},
+  {n:"多烯磷脂酰胆碱注射液",d:"20 ml",f:"qd",r:"ivdrip",way:"iv.drip",mix:"5% 葡萄糖 100 ml",t:""},
+  {n:"谷胱甘肽",d:"2.4 g",f:"—",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:""},
+  {n:"甘草酸二铵",d:"0.15 g",f:"st",r:"ivdrip",way:"iv.drip",mix:"10% 葡萄糖 250 ml",t:"st 即刻"}
  ]},
  {cat:"祛痰 · 平喘 · 雾化",items:[
-  {n:"痰热清注射液",d:"30 ml",f:"qd",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"中药注射剂，单独输注"},
-  {n:"多索茶碱注射液",d:"0.3 g",f:"qd",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 100 ml",t:""},
-  {n:"二羟丙茶碱",d:"0.3 g",f:"bid",r:"iv",way:"iv.drip",mix:"葡萄糖 50 ml",t:""},
-  {n:"氨溴索注射液",d:"15 mg",f:"bid",r:"iv",way:"iv.drip",mix:"NS 50 ml",t:""},
+  {n:"痰热清注射液",d:"30 ml",f:"qd",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:"中药注射剂，单独输注"},
+  {n:"多索茶碱注射液",d:"0.3 g",f:"qd",r:"ivdrip",way:"iv.drip",mix:"5% 葡萄糖 100 ml",t:""},
+  {n:"二羟丙茶碱",d:"0.3 g",f:"bid",r:"ivdrip",way:"iv.drip",mix:"葡萄糖 50 ml",t:""},
+  {n:"氨溴索注射液",d:"15 mg",f:"bid",r:"ivdrip",way:"iv.drip",mix:"NS 50 ml",t:""},
   {n:"乙酰半胱氨酸片",d:"0.6 g",f:"bid",r:"po",way:"po",mix:"",t:"咳嗽／祛痰"},
   {n:"雾化：布地奈德＋异丙托溴铵＋特布他林＋乙酰半胱氨酸",d:"1 mg ＋ 0.5 mg ＋ 2.5 mg ＋ 0.3 g",f:"bid",r:"inh",way:"雾化吸入",mix:"",t:"四联雾化，注意吸入后漱口"}
  ]},
  {cat:"止吐 · 胃肠",items:[
   {n:"昂丹司琼注射液",d:"8 mg",f:"—",r:"iv",way:"iv",mix:"NS 10 ml",t:"止吐"},
   {n:"甲氧氯普胺（胃痛）",d:"10 mg",f:"—",r:"im",way:"im",mix:"",t:"肌注，注意锥体外系反应"},
-  {n:"奥美拉唑",d:"40 mg",f:"qd",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"抑酸"},
-  {n:"间苯三酚（腹痛）",d:"40 mg",f:"—",r:"iv",way:"iv.drip",mix:"5% 葡萄糖 250 ml",t:"解痉"}
+  {n:"奥美拉唑",d:"40 mg",f:"qd",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:"抑酸"},
+  {n:"间苯三酚（腹痛）",d:"40 mg",f:"—",r:"ivdrip",way:"iv.drip",mix:"5% 葡萄糖 250 ml",t:"解痉"}
  ]},
  {cat:"抗感染",items:[
-  {n:"头孢哌酮钠/舒巴坦钠",d:"3 g",f:"q8h",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"监测凝血功能、酒精双硫仑反应"},
-  {n:"头孢曲松钠",d:"1 g",f:"qd",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"禁与含钙溶液（含林格、钙剂）同管"},
-  {n:"氨曲南",d:"1 g",f:"bid",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:""},
-  {n:"美罗培南",d:"1 g",f:"q8h",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"注意输注时长与癫痫发作风险"},
-  {n:"替加环素",d:"50 mg",f:"q12h",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:""},
-  {n:"替考拉宁",d:"200 mg",f:"—",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"首剂负荷后 qd/qod 维持，监测谷浓度"},
-  {n:"万古霉素",d:"1 g",f:"q12h",r:"iv",way:"iv.drip",mix:"NS 200 ml",t:"监测谷浓度与肾功能"},
-  {n:"多粘菌素 B",d:"50 万 u",f:"bid",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"注意肾毒性、神经毒性"},
-  {n:"多粘菌素 E（黏菌素）",d:"150 mg",f:"q12h",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"注意肾毒性，按产品说明书换算"},
-  {n:"卡泊芬净",d:"50 mg",f:"qd",r:"iv",way:"iv.drip",mix:"NS 250 ml",t:"首日常需负荷量 70 mg"},
-  {n:"艾莎康唑",d:"200 mg",f:"qd",r:"iv",way:"iv.drip",mix:"NS 250 ml",t:"注意输注反应与肝功能"},
-  {n:"泊沙康唑",d:"0.3 g",f:"qd",r:"iv",way:"iv.drip",mix:"NS 150 ml",t:"需负荷剂量方案，见说明书"},
-  {n:"替硝唑氯化钠注射液",d:"0.8 g",f:"qd",r:"iv",way:"iv.drip",mix:"",t:"硝基咪唑类，用药期间禁酒"}
+  {n:"头孢哌酮钠/舒巴坦钠",d:"3 g",f:"q8h",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:"监测凝血功能、酒精双硫仑反应"},
+  {n:"头孢曲松钠",d:"1 g",f:"qd",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:"禁与含钙溶液（含林格、钙剂）同管"},
+  {n:"氨曲南",d:"1 g",f:"bid",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:""},
+  {n:"美罗培南",d:"1 g",f:"q8h",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:"注意输注时长与癫痫发作风险"},
+  {n:"替加环素",d:"50 mg",f:"q12h",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:""},
+  {n:"替考拉宁",d:"200 mg",f:"—",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:"首剂负荷后 qd/qod 维持，监测谷浓度"},
+  {n:"万古霉素",d:"1 g",f:"q12h",r:"ivdrip",way:"iv.drip",mix:"NS 200 ml",t:"监测谷浓度与肾功能"},
+  {n:"多粘菌素 B",d:"50 万 u",f:"bid",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:"注意肾毒性、神经毒性"},
+  {n:"多粘菌素 E（黏菌素）",d:"150 mg",f:"q12h",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:"注意肾毒性，按产品说明书换算"},
+  {n:"卡泊芬净",d:"50 mg",f:"qd",r:"ivdrip",way:"iv.drip",mix:"NS 250 ml",t:"首日常需负荷量 70 mg"},
+  {n:"艾莎康唑",d:"200 mg",f:"qd",r:"ivdrip",way:"iv.drip",mix:"NS 250 ml",t:"注意输注反应与肝功能"},
+  {n:"泊沙康唑",d:"0.3 g",f:"qd",r:"ivdripv",way:"iv.drip",mix:"NS 150 ml",t:"需负荷剂量方案，见说明书"},
+  {n:"替硝唑氯化钠注射液",d:"0.8 g",f:"qd",r:"ivdrip",way:"iv.drip",mix:"",t:"硝基咪唑类，用药期间禁酒"}
  ]},
  {cat:"口服抗感染",items:[
   {n:"头孢地尼胶囊",d:"0.1 g",f:"tid",r:"po",way:"po",mix:"",t:""},
@@ -231,14 +231,14 @@ const DATA = [
   {n:"米诺环素胶囊",d:"100 mg",f:"bid",r:"po",way:"po",mix:"",t:"光敏反应，多喝水"}
  ]},
  {cat:"血液系统",items:[
-  {n:"蔗糖铁",d:"0.1 g",f:"qod",r:"iv",way:"iv.drip",mix:"NS 100 ml",t:"qod 隔日，试验剂量后给药"}
+  {n:"蔗糖铁",d:"0.1 g",f:"qod",r:"ivdrip",way:"iv.drip",mix:"NS 100 ml",t:"qod 隔日，试验剂量后给药"}
  ]},
  {cat:"降尿酸",items:[
   {n:"碳酸氢钠片",d:"0.5 g",f:"tid",r:"po",way:"P.O.",mix:"",t:"碱化尿液"},
   {n:"非布司他片",d:"20 mg",f:"qd",r:"po",way:"P.O.",mix:"",t:"监测肝肾功能"}
  ]},
  {cat:"其他",items:[
-  {n:"硫辛酸",d:"0.6 g",f:"qd",r:"iv",way:"iv.drip",mix:"NS 250 ml",t:""},
+  {n:"硫辛酸",d:"0.6 g",f:"qd",r:"ivdrip",way:"iv.drip",mix:"NS 250 ml",t:""},
   {n:"荆防颗粒",d:"1 袋",f:"tid",r:"po",way:"po",mix:"",t:"感冒"},
   {n:"西酞普兰片（抗焦虑）",d:"20 mg",f:"qd",r:"po",way:"P.O.",mix:"",t:"注意 QT 延长与出血风险"}
  ]},
@@ -250,7 +250,7 @@ const DATA = [
  ]}
 ];
 
-const ROUTE_NAME={iv:"静脉滴注/推注",po:"口服",im:"肌注",inh:"雾化吸入",skin:"皮试",pump:"静脉泵入"};
+const ROUTE_NAME={iv:"静脉推注",po:"口服",im:"肌注",inh:"雾化吸入",skin:"皮试",pump:"静脉泵入",ivdrip:"静脉滴注"};
 let total=0, flat=[];
 DATA.forEach((g,gi)=>g.items.forEach((it,i)=>{it.cat=g.cat;it.id=gi+'-'+i;flat.push(it);total++;}));
 
